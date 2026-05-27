@@ -1,0 +1,137 @@
+/* Shared chrome for the modal + drawer family. */
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.title {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.kicker {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.body {
+  padding: 8px 20px 20px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 120ms,
+    color 120ms;
+  flex: none;
+}
+.iconBtn:hover {
+  background: var(--bg-inset);
+  color: var(--ink);
+}
+
+/* Setting rows */
+.rowSetting {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.rowSetting:last-child {
+  border-bottom: none;
+}
+.rowStacked {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.rowName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.rowDesc {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  max-width: 360px;
+}
+
+/* Text input + select */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--rule-2);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  transition: border-color 120ms;
+}
+.input:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+.select {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+/* Callout box */
+.callout {
+  background: var(--bg-inset);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  border-left: 2px solid var(--rule-2);
+}
+.calloutLabel {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.calloutAccent {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+.calloutAccent .calloutLabel {
+  color: var(--accent);
+}
+
+/* Full-width primary action at the bottom of a modal body. */
+.fullBtn {
+  width: 100%;
+  justify-content: center;
+}
+.btnRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+.btnRow > * {
+  flex: 1;
+  justify-content: center;
+}

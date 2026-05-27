@@ -1,0 +1,27 @@
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule-2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmented button {
+  background: var(--bg);
+  color: var(--ink);
+  border: none;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 120ms;
+}
+
+.segmented button + button {
+  border-left: 1px solid var(--rule-2);
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--ink);
+  color: white;
+}

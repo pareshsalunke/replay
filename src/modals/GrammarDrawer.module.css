@@ -1,0 +1,139 @@
+.head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.body {
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+}
+
+.word {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.typeTags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.explanation p {
+  color: var(--ink-2);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+.loadingRow {
+  color: var(--muted);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.errorText {
+  color: var(--muted);
+  font-style: italic;
+  margin: 0 0 10px;
+}
+.retryBtn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.altList span {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.altList span:last-child {
+  border-bottom: none;
+}
+
+.practiceSection {
+  border-top: 1px solid var(--rule);
+  padding-top: 18px;
+  margin-top: 18px;
+}
+.practiceLabel {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.privacyRow {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.chatBubbles {
+  margin-top: 16px;
+}
+.bubbleUser {
+  background: var(--ink);
+  color: white;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.bubbleAi {
+  background: var(--bg-inset);
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.bubbleCorrect {
+  border-left: 3px solid var(--good);
+}
+.bubbleIncorrect {
+  border-left: 3px solid var(--accent);
+}
+.bubbleResult {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.bubbleText {
+  margin: 0;
+}
+.gradingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-style: italic;
+}

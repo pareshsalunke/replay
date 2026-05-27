@@ -1,0 +1,9 @@
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--rule);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: sj-spin 0.7s linear infinite;
+}

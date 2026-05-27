@@ -1,0 +1,24 @@
+/* ───────────────────────── Design tokens ─────────────────────────
+   Ported verbatim from the prototype. Global custom properties —
+   referenced by every CSS Module via var(--token).                  */
+:root {
+  --bg: #ffffff;
+  --bg-inset: #f7f7f5;
+  --bg-panel: #fafaf8;
+  --ink: #0a0a0a;
+  --ink-2: #2a2a2a;
+  --muted: #6b6b6b;
+  --muted-2: #9a9a9a;
+  --rule: #ececec;
+  --rule-2: #e3e3e0;
+  --accent: oklch(0.55 0.18 30);
+  --accent-soft: oklch(0.55 0.18 30 / 0.08);
+  --accent-line: oklch(0.55 0.18 30 / 0.35);
+  --good: oklch(0.62 0.12 150);
+  --info: oklch(0.55 0.12 240);
+  /* Grammar type colors */
+  --gr-verb: #d46a43;
+  --gr-case: #3a5a78;
+  --gr-syntax: #5a7156;
+  --gr-vocab: #8b5e83;
+}

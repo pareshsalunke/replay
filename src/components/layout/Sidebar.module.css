@@ -1,0 +1,136 @@
+.sidebar {
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  padding: 8px 10px 4px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: var(--ink-2);
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 500;
+  width: 100%;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+.navItem:hover {
+  background: var(--bg-inset);
+  color: var(--ink);
+}
+.navItem[aria-current='page'] {
+  background: var(--bg-inset);
+  color: var(--ink);
+  font-weight: 600;
+}
+.ico {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--muted);
+  display: inline-flex;
+}
+.navItem[aria-current='page'] .ico {
+  color: var(--ink);
+}
+.count {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.newBtn {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 120ms;
+}
+.newBtn:hover {
+  background: #1f1f1f;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.privacy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 10px 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 10px 8px;
+  border-top: 1px solid var(--rule);
+  margin-top: 8px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-inset);
+  border: 1px solid var(--rule-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.who b {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.who span {
+  font-size: 11px;
+  color: var(--muted);
+}

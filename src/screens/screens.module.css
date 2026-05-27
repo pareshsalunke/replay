@@ -1,0 +1,112 @@
+/* Shared screen chrome — page heads, tab rows, two-column grid, empty state. */
+
+.pageHead {
+  margin-bottom: 24px;
+}
+.pageHead h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pageHead p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  max-width: 56ch;
+}
+
+.pageActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tabRow {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 20px;
+}
+.tab {
+  background: transparent;
+  border: none;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 120ms,
+    border-color 120ms;
+}
+.tab:hover {
+  color: var(--ink);
+}
+.tab[aria-selected='true'] {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+
+/* Two-column live/transcript layout. */
+.liveGrid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  margin-top: 4px;
+}
+
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Bordered transcript container. */
+.transcript {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+/* Empty / placeholder state inside cards. */
+.emptyState {
+  padding: 60px 32px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+.emptyState strong {
+  color: var(--ink);
+  font-size: 16px;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.headRight {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Card header inside a transcript container. */
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.cardHead h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}

@@ -1,0 +1,64 @@
+/* Grammar underlines — subtle, per-type colored. */
+.grammar-verb,
+.grammar-case,
+.grammar-syntax,
+.grammar-vocab,
+.grammar-lexicon {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.grammar-verb {
+  text-decoration-color: var(--gr-verb);
+}
+.grammar-case {
+  text-decoration-color: var(--gr-case);
+}
+.grammar-syntax {
+  text-decoration-color: var(--gr-syntax);
+}
+.grammar-vocab,
+.grammar-lexicon {
+  text-decoration-color: var(--gr-vocab);
+}
+
+.grammar-verb:hover {
+  background: color-mix(in oklch, var(--gr-verb) 10%, transparent);
+}
+.grammar-case:hover {
+  background: color-mix(in oklch, var(--gr-case) 10%, transparent);
+}
+.grammar-syntax:hover {
+  background: color-mix(in oklch, var(--gr-syntax) 10%, transparent);
+}
+.grammar-vocab:hover,
+.grammar-lexicon:hover {
+  background: color-mix(in oklch, var(--gr-vocab) 10%, transparent);
+}
+
+/* Translation tooltip shown on sentence hover. */
+.transcriptSentence {
+  position: relative;
+  cursor: help;
+}
+.tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  background: var(--ink);
+  color: white;
+  font-size: 12px;
+  padding: 6px 10px;
+  max-width: 420px;
+  border-radius: 4px;
+  z-index: 50;
+  font-style: normal;
+  line-height: 1.4;
+}
+.transcriptSentence:hover .tooltip {
+  display: block;
+}

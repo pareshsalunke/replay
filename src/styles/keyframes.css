@@ -1,0 +1,84 @@
+/* ───────────────────────── Keyframe animations ─────────────────────────
+   Ported verbatim from the prototype. Global so any CSS Module can
+   reference them by name (animation: sj-blink ...).                       */
+
+/* Recording banner sweeping progress line */
+@keyframes sj-sweep {
+  0% {
+    width: 0%;
+    opacity: 0.9;
+  }
+  70% {
+    width: 100%;
+    opacity: 0.9;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+/* Recording indicator blink */
+@keyframes sj-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
+/* Interim transcript caret blink */
+@keyframes sj-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Loading spinner */
+@keyframes sj-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Overlay / modal fade-in */
+@keyframes sj-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Drawer slide-in from the right */
+@keyframes sj-slide {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Modal card pop-in */
+@keyframes sj-pop {
+  from {
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

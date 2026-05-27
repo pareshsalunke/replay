@@ -1,0 +1,92 @@
+/* KPI grid */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.kpi {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 168px;
+}
+
+.kLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kValue {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.kFoot {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Meeting ledger rows */
+.listRow {
+  display: grid;
+  grid-template-columns: 80px 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  transition: background 120ms;
+}
+.listRow:focus {
+  outline: none;
+}
+.listRow:focus-visible {
+  background: var(--bg-inset);
+  box-shadow: inset 2px 0 0 var(--ink);
+}
+.listRow:last-child {
+  border-bottom: none;
+}
+.listRow:hover {
+  background: var(--bg-inset);
+}
+
+.time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.sub {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.arrow {
+  color: var(--muted-2);
+}

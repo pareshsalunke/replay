@@ -1,0 +1,33 @@
+.countMeta {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.masteryTrack {
+  height: 4px;
+  background: var(--bg-inset);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.masteryFill {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+.constructRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.constructName {
+  color: var(--ink-2);
+}
+.constructValue {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}

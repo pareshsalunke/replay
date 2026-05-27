@@ -1,0 +1,73 @@
+.completeKicker {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.summaryTitle {
+  margin: 0;
+  font-size: 18px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.stat {
+  padding: 16px;
+}
+.stat + .stat {
+  border-left: 1px solid var(--rule);
+}
+.statLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.statValue {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.section {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.noneFlagged {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+.vocabCount {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.actions {
+  padding: 16px 20px;
+  display: flex;
+  gap: 8px;
+}
