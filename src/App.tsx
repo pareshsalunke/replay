@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { migrateLegacyStorage } from '@/services/storage';
+import { trackAppOpened } from '@/services/analytics';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useSessionsStore } from '@/store/sessionsStore';
 import { RecordingControlsProvider } from '@/context/RecordingControls';
@@ -20,6 +21,7 @@ export default function App() {
     migrateLegacyStorage();
     useSettingsStore.getState().loadFromStorage();
     useSessionsStore.getState().loadFromStorage();
+    trackAppOpened();
   }, []);
 
   useEscapeKey();

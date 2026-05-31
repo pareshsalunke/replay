@@ -39,6 +39,9 @@ export interface Sentence {
   highlights: Highlight[];
 }
 
+/** Where a capture happened — used to separate real meetings from desk tests. */
+export type SessionContext = 'class' | 'teacher' | 'work' | 'testing';
+
 /** A recorded practice session, persisted to localStorage. */
 export interface Session {
   id: string;
@@ -48,12 +51,12 @@ export interface Session {
   overallCefr: Cefr;
   durationSeconds: number;
   sentences: Sentence[];
+  /** Where the capture took place — set by the user in the post-session modal. */
+  context?: SessionContext;
 }
 
 /** Persisted user settings. */
 export interface Settings {
-  deepgramKey: string;
-  geminiKey: string;
   localStorageOnly: boolean;
   autoDetect: boolean;
   exportFormat: ExportFormat;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Cefr, ExportFormat } from '@/types';
 import { useUiStore } from '@/store/uiStore';
 import { useSettingsStore } from '@/store/settingsStore';
+import { exportUsageLog } from '@/services/analytics';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { Toggle } from '@/components/ui/Toggle';
@@ -18,7 +19,7 @@ const CEFR_OPTIONS: { value: Cefr; label: string }[] = [
   { value: 'C2', label: 'C2 — Mastery' },
 ];
 
-/** Settings modal — API keys, toggles, CEFR level, export format. */
+/** Settings modal — toggles, CEFR level, export format. API keys come from build env. */
 export function SettingsModal() {
   const open = useUiStore((s) => s.settingsOpen);
   const close = useUiStore((s) => s.closeSettings);
@@ -32,8 +33,6 @@ export function SettingsModal() {
 /** Inner form — re-mounts (fresh state) each time the modal opens. */
 function SettingsForm({ onDone }: { onDone: () => void }) {
   const save = useSettingsStore((s) => s.save);
-  const [deepgramKey, setDeepgramKey] = useState(() => useSettingsStore.getState().deepgramKey);
-  const [geminiKey, setGeminiKey] = useState(() => useSettingsStore.getState().geminiKey);
   const [autoDetect, setAutoDetect] = useState(() => useSettingsStore.getState().autoDetect);
   const [localStorageOnly, setLocalStorageOnly] = useState(
     () => useSettingsStore.getState().localStorageOnly,
@@ -44,7 +43,7 @@ function SettingsForm({ onDone }: { onDone: () => void }) {
   );
 
   const handleSave = () => {
-    save({ deepgramKey, geminiKey, autoDetect, localStorageOnly, userCefr, exportFormat });
+    save({ autoDetect, localStorageOnly, userCefr, exportFormat });
     onDone();
   };
 
@@ -61,36 +60,6 @@ function SettingsForm({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className={styles.body}>
-        <div className={`${styles.rowSetting} ${styles.rowStacked}`}>
-          <div>
-            <div className={styles.rowName}>Deepgram API key</div>
-            <div className={styles.rowDesc}>Used for live German transcription. Stored locally.</div>
-          </div>
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="••••••••••••••••"
-            value={deepgramKey}
-            onChange={(e) => setDeepgramKey(e.target.value)}
-          />
-        </div>
-
-        <div className={`${styles.rowSetting} ${styles.rowStacked}`}>
-          <div>
-            <div className={styles.rowName}>Gemini API key</div>
-            <div className={styles.rowDesc}>
-              Used for grammar analysis, translation, and deep-dives. Stored locally.
-            </div>
-          </div>
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="••••••••••••••••"
-            value={geminiKey}
-            onChange={(e) => setGeminiKey(e.target.value)}
-          />
-        </div>
-
         <div className={styles.rowSetting}>
           <div>
             <div className={styles.rowName}>Auto-detect meetings</div>
@@ -152,9 +121,8 @@ function SettingsForm({ onDone }: { onDone: () => void }) {
 
         <div className={styles.callout} style={{ marginTop: 16 }}>
           <span className={styles.calloutLabel}>Privacy note</span>
-          API keys are stored locally in your browser. Audio is sent to Deepgram for transcription
-          and sentences to Google Gemini for analysis. Enable Local-only storage to keep transcripts
-          on-device.
+          Your sessions are stored on this device. Audio is sent to Deepgram and text to Gemini for
+          analysis.
         </div>
 
         <Button
@@ -164,6 +132,14 @@ function SettingsForm({ onDone }: { onDone: () => void }) {
           onClick={handleSave}
         >
           Save configuration
+        </Button>
+
+        <Button
+          className={styles.fullBtn}
+          style={{ padding: 11, marginTop: 8 }}
+          onClick={exportUsageLog}
+        >
+          Export usage log (for feedback)
         </Button>
       </div>
     </>

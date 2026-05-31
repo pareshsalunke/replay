@@ -10,8 +10,6 @@ const MIGRATED_FLAG = 'replay_migrated';
 
 /** Key suffixes shared by the old (`sprachjournal_`) and new (`replay_`) prefixes. */
 const KEYS = {
-  deepgram: 'deepgram_key',
-  gemini: 'gemini_key',
   localOnly: 'local_only',
   autoDetect: 'auto_detect',
   sessions: 'sessions',
@@ -48,8 +46,6 @@ export function migrateLegacyStorage(): void {
 /** Load persisted settings, applying defaults for any missing values. */
 export function loadSettings(): Settings {
   return {
-    deepgramKey: get(KEYS.deepgram) || '',
-    geminiKey: get(KEYS.gemini) || '',
     autoDetect: get(KEYS.autoDetect) === '1',
     localStorageOnly: get(KEYS.localOnly) === '1',
     exportFormat: (get(KEYS.exportFormat) as ExportFormat) || 'md',
@@ -59,8 +55,6 @@ export function loadSettings(): Settings {
 
 /** Persist all settings. */
 export function saveSettings(s: Settings): void {
-  set(KEYS.deepgram, s.deepgramKey);
-  set(KEYS.gemini, s.geminiKey);
   set(KEYS.autoDetect, s.autoDetect ? '1' : '0');
   set(KEYS.localOnly, s.localStorageOnly ? '1' : '0');
   set(KEYS.exportFormat, s.exportFormat);

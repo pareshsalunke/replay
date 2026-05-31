@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { ChatMessage, GrammarTarget, GrammarType } from '@/types';
 import { useGrammarStore } from '@/store/grammarStore';
-import { useSettingsStore } from '@/store/settingsStore';
 import { callGemini, callGeminiStream } from '@/services/gemini';
 import { explanationPrompt, gradingPrompt } from '@/services/prompts';
+import { trackGrammarDeepDive } from '@/services/analytics';
+import { getGeminiKey } from '@/services/apiKeys';
 import { Drawer } from '@/components/ui/Drawer';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
@@ -51,7 +52,7 @@ type ExplState = 'loading' | 'done' | 'error' | 'noKey';
 
 /** Inner content — re-mounts per highlight (keyed), so state is always fresh. */
 function GrammarContent({ target, onClose }: { target: GrammarTarget; onClose: () => void }) {
-  const geminiKey = useSettingsStore((s) => s.geminiKey);
+  const geminiKey = getGeminiKey();
   const [explanation, setExplanation] = useState('');
   const [explState, setExplState] = useState<ExplState>('loading');
   const [errorTransient, setErrorTransient] = useState(false);
@@ -86,6 +87,10 @@ function GrammarContent({ target, onClose }: { target: GrammarTarget; onClose: (
   useEffect(() => {
     void loadExplanation();
   }, [loadExplanation]);
+
+  useEffect(() => {
+    trackGrammarDeepDive(target.type);
+  }, [target.type]);
 
   return (
     <>
@@ -134,7 +139,7 @@ function GrammarContent({ target, onClose }: { target: GrammarTarget; onClose: (
           )}
           {explState === 'noKey' && (
             <p className={styles.errorText}>
-              Configure your Gemini API key in Settings to get grammar explanations.
+              Grammar analysis is not configured on this deployment.
             </p>
           )}
           {explState === 'error' && (
@@ -182,7 +187,10 @@ function PracticeSection({ target, geminiKey }: { target: GrammarTarget; geminiK
     addChatMessage({ id: aiId, role: 'ai', text: 'Grading…', status: 'pending' });
 
     if (!geminiKey) {
-      updateChatMessage(aiId, { text: 'Configure Gemini API key in Settings.', status: 'done' });
+      updateChatMessage(aiId, {
+        text: 'Grammar grading is not configured on this deployment.',
+        status: 'done',
+      });
       return;
     }
 

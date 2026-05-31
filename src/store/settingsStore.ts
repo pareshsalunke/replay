@@ -10,8 +10,6 @@ interface SettingsState extends Settings {
 }
 
 const DEFAULTS: Settings = {
-  deepgramKey: '',
-  geminiKey: '',
   localStorageOnly: false,
   autoDetect: false,
   exportFormat: 'md',
@@ -26,8 +24,6 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   save: (partial) => {
     const current = get();
     const next: Settings = {
-      deepgramKey: current.deepgramKey,
-      geminiKey: current.geminiKey,
       localStorageOnly: current.localStorageOnly,
       autoDetect: current.autoDetect,
       exportFormat: current.exportFormat,

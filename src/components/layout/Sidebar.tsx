@@ -70,7 +70,7 @@ export function Sidebar() {
 
       <div className={styles.privacy}>
         <Icon name="lock" size={12} />
-        Your data never leaves this device
+        Sessions stored on this device · audio to Deepgram, text to Gemini
       </div>
 
       <div className={styles.profile}>

@@ -2,6 +2,7 @@ import type { AnalysisResult, Cefr, GrammarType, Highlight } from '@/types';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useRecordingStore } from '@/store/recordingStore';
 import { callGemini, ANALYSIS_SCHEMA } from './gemini';
+import { getGeminiKey } from './apiKeys';
 import { analysisPrompt } from './prompts';
 
 const CEFR_VALUES = new Set<string>(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
@@ -13,8 +14,9 @@ const GRAMMAR_TYPES = new Set<string>(['verb', 'case', 'syntax', 'vocab', 'lexic
  * so a bad analysis never interrupts the live session.
  */
 export async function runSentenceAnalysis(sentenceId: string, text: string): Promise<void> {
-  const { geminiKey, userCefr } = useSettingsStore.getState();
+  const geminiKey = getGeminiKey();
   if (!geminiKey) return;
+  const { userCefr } = useSettingsStore.getState();
 
   try {
     const raw = await callGemini(geminiKey, analysisPrompt(text, userCefr), ANALYSIS_SCHEMA);

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Cefr, Sentence, Session } from '@/types';
-import { useSettingsStore } from '@/store/settingsStore';
 import { useSessionsStore } from '@/store/sessionsStore';
 import { useRecordingStore } from '@/store/recordingStore';
 import { useUiStore } from '@/store/uiStore';
@@ -9,6 +8,8 @@ import { modeCefr } from '@/lib/cefr';
 import { startAudioCapture, stopAudioCapture } from '@/services/audioCapture';
 import { createDeepgramConnection, type DeepgramConnection } from '@/services/deepgram';
 import { runSentenceAnalysis } from '@/services/analysis';
+import { trackCaptureCompleted, trackCaptureStarted } from '@/services/analytics';
+import { getDeepgramKey } from '@/services/apiKeys';
 
 /** Imperative recording controls exposed to the UI. */
 export interface RecordingControls {
@@ -53,10 +54,12 @@ export function useRecordingSession(): RecordingControls {
   }, []);
 
   const beginRecording = useCallback(() => {
-    const { deepgramKey } = useSettingsStore.getState();
+    const deepgramKey = getDeepgramKey();
     if (!deepgramKey) {
-      // No key — send the user to Settings instead of starting.
-      useUiStore.getState().openSettings();
+      // Build was deployed without VITE_DEEPGRAM_KEY — nothing we can do client-side.
+      useRecordingStore
+        .getState()
+        .setError('Transcription is not configured on this deployment.');
       return;
     }
 
@@ -73,6 +76,7 @@ export function useRecordingSession(): RecordingControls {
       sentences: [],
     };
     useRecordingStore.getState().start(draft);
+    trackCaptureStarted();
     navigate('/live');
 
     // Elapsed-time timer.
@@ -139,6 +143,7 @@ export function useRecordingSession(): RecordingControls {
     };
 
     useSessionsStore.getState().addOrUpdate(finalSession);
+    trackCaptureCompleted(finalSession.context ?? 'testing', elapsed);
     rec.reset();
     useUiStore.getState().showSummary(finalSession);
     navigate('/');

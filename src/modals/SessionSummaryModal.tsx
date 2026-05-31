@@ -1,11 +1,15 @@
-import type { GrammarType, Session } from '@/types';
+import { useEffect, useState } from 'react';
+import type { GrammarType, Session, SessionContext } from '@/types';
 import { useUiStore } from '@/store/uiStore';
 import { useSettingsStore } from '@/store/settingsStore';
+import { useSessionsStore } from '@/store/sessionsStore';
 import { downloadSession } from '@/lib/export';
+import { trackExport, trackFeedbackViewed } from '@/services/analytics';
 import { formatDuration } from '@/lib/format';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
+import { Segmented } from '@/components/ui/Segmented';
 import { Icon } from '@/components/ui/Icon';
 import modal from './modals.module.css';
 import styles from './SessionSummaryModal.module.css';
@@ -18,6 +22,13 @@ const TYPE_COLORS: Record<GrammarType, string> = {
   lexicon: '#8b5e83',
 };
 
+const CONTEXT_OPTIONS: { value: SessionContext; label: string }[] = [
+  { value: 'class', label: 'Class' },
+  { value: 'teacher', label: 'Teacher' },
+  { value: 'work', label: 'Work' },
+  { value: 'testing', label: 'Just testing' },
+];
+
 /** Post-session summary. Dismissing it exports the session to disk. */
 export function SessionSummaryModal() {
   const session = useUiStore((s) => s.summarySession);
@@ -25,7 +36,12 @@ export function SessionSummaryModal() {
   const exportFormat = useSettingsStore((s) => s.exportFormat);
 
   const handleDismiss = () => {
-    if (session) downloadSession(session, exportFormat);
+    if (session) {
+      // Re-read so the context the user just picked is reflected in the export.
+      const latest = useSessionsStore.getState().getById(session.id) ?? session;
+      downloadSession(latest, exportFormat);
+      trackExport(exportFormat);
+    }
     closeSummary();
   };
 
@@ -39,6 +55,16 @@ export function SessionSummaryModal() {
 function SummaryContent({ session, onDismiss }: { session: Session; onDismiss: () => void }) {
   const sentences = session.sentences || [];
   const highlights = sentences.flatMap((s) => s.highlights || []);
+  const [context, setContext] = useState<SessionContext>(session.context ?? 'testing');
+
+  useEffect(() => {
+    trackFeedbackViewed(sentences.length);
+  }, [sentences.length]);
+
+  const handleContextChange = (next: SessionContext) => {
+    setContext(next);
+    useSessionsStore.getState().addOrUpdate({ ...session, context: next });
+  };
 
   const typeCounts = new Map<GrammarType, number>();
   for (const h of highlights) typeCounts.set(h.type, (typeCounts.get(h.type) ?? 0) + 1);
@@ -71,6 +97,11 @@ function SummaryContent({ session, onDismiss }: { session: Session; onDismiss: (
           <div className={styles.statLabel}>CEFR</div>
           <div className={styles.statValue}>{session.overallCefr || '—'}</div>
         </div>
+      </div>
+
+      <div className={styles.section}>
+        <div className={styles.sectionLabel}>Where was this?</div>
+        <Segmented options={CONTEXT_OPTIONS} value={context} onChange={handleContextChange} />
       </div>
 
       <div className={styles.section}>
