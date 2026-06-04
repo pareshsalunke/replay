@@ -13,6 +13,13 @@ export type Cefr = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
  */
 export type GrammarType = 'verb' | 'case' | 'syntax' | 'vocab' | 'lexicon';
 
+/**
+ * The four display buckets for grammar constructs. Identical to GrammarType
+ * minus the legacy 'lexicon' alias (which folds into 'vocab' for display).
+ * Defined here so it's the single source of truth shared by lib/ and types.
+ */
+export type ConstructType = 'verb' | 'case' | 'syntax' | 'vocab';
+
 /** File format for session export. */
 export type ExportFormat = 'md' | 'txt';
 
@@ -116,4 +123,41 @@ export interface GrammarTarget {
   reason: string;
   correction: string;
   alternatives: string[];
+}
+
+/* ───────────────────────── Lexicon types ───────────────────────── */
+
+/**
+ * A deduplicated vocabulary entry aggregated from all sessions' highlights.
+ * Keyed by normalized text + display type; see lib/lexicon.ts.
+ */
+export interface LexiconEntry {
+  /** Stable dedupe key: `${normalizedText}|${type}`. */
+  id: string;
+  /** First-seen original casing of the word/phrase. */
+  text: string;
+  /** Display/grammar bucket (lexicon folded into vocab). */
+  type: ConstructType;
+  /** Representative reason (prefers an occurrence that carried a correction). */
+  reason: string;
+  /** Representative correction ('' when never flagged as an error). */
+  correction: string;
+  /** Representative alternative phrasings. */
+  alternatives: string[];
+  /** The sentence this entry was drawn from (drawer context). */
+  exampleSentence: string;
+  /** Translation of that example sentence ('' if none). */
+  exampleTranslation: string;
+  /** CEFR of the source sentence ('' if unanalyzed). */
+  cefr: Cefr | '';
+  /** Source session of the representative occurrence. */
+  sessionId: string;
+  sessionTitle: string;
+  sessionDate: string;
+  /** How many times this word|type appeared across all sessions. */
+  count: number;
+  /** Most recent session date this entry appeared in (ISO) — for sort/filter. */
+  lastSeenDate: string;
+  /** Whether ANY occurrence carried a correction (drives a "needs work" mark). */
+  hasError: boolean;
 }

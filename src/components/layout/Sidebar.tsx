@@ -1,10 +1,11 @@
+import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Icon, type IconName } from '@/components/ui/Icon';
 import { useUiStore } from '@/store/uiStore';
 import { useSessionsStore } from '@/store/sessionsStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useRecordingControls } from '@/context/RecordingControls';
-import { archiveTotals } from '@/lib/stats';
+import { buildLexiconEntries } from '@/lib/lexicon';
 import styles from './Sidebar.module.css';
 
 /** Left workspace navigation, New-entry CTA, privacy note, and profile. */
@@ -16,7 +17,7 @@ export function Sidebar() {
   const userCefr = useSettingsStore((s) => s.userCefr);
   const { beginRecording } = useRecordingControls();
 
-  const lexiconCount = archiveTotals(sessions).totalHighlights;
+  const lexiconCount = useMemo(() => buildLexiconEntries(sessions).length, [sessions]);
 
   const goTranscripts = () => {
     if (sessions.length > 0) navigate(`/studio/${sessions[0].id}`);
@@ -48,10 +49,17 @@ export function Sidebar() {
           onClick={goTranscripts}
         />
         <NavItem
+          icon="insights"
+          label="Insights"
+          active={pathname === '/insights'}
+          onClick={() => navigate('/insights')}
+        />
+        <NavItem
           icon="book"
           label="Lexicon"
           count={lexiconCount}
-          onClick={() => window.alert('Lexicon — coming in V1.5')}
+          active={pathname === '/lexicon'}
+          onClick={() => navigate('/lexicon')}
         />
         <NavItem
           icon="grammar"

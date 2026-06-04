@@ -14,7 +14,8 @@ export type IconName =
   | 'lock'
   | 'export'
   | 'close'
-  | 'arrowRight';
+  | 'arrowRight'
+  | 'insights';
 
 /** Inner SVG content for each icon (24×24 viewBox, currentColor stroke). */
 const PATHS: Record<IconName, ReactNode> = {
@@ -66,6 +67,12 @@ const PATHS: Record<IconName, ReactNode> = {
   export: <path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />,
   close: <path d="m6 6 12 12M18 6 6 18" />,
   arrowRight: <path d="M5 12h14M13 6l6 6-6 6" />,
+  insights: (
+    <>
+      <path d="M4 20V4M4 20h16" />
+      <path d="M8 20v-5M13 20v-9M18 20v-4" />
+    </>
+  ),
 };
 
 interface IconProps {

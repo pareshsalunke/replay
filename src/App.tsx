@@ -10,6 +10,8 @@ import { AppShell } from '@/components/layout/AppShell';
 import { ArchiveScreen } from '@/screens/ArchiveScreen';
 import { LiveScreen } from '@/screens/LiveScreen';
 import { StudioScreen } from '@/screens/StudioScreen';
+import { InsightsScreen } from '@/screens/InsightsScreen';
+import { LexiconScreen } from '@/screens/LexiconScreen';
 import { SettingsModal } from '@/modals/SettingsModal';
 import { TranscriptionConfigModal } from '@/modals/TranscriptionConfigModal';
 import { SessionSummaryModal } from '@/modals/SessionSummaryModal';
@@ -34,6 +36,8 @@ export default function App() {
             <Route index element={<ArchiveScreen />} />
             <Route path="live" element={<LiveScreen />} />
             <Route path="studio/:id" element={<StudioScreen />} />
+            <Route path="insights" element={<InsightsScreen />} />
+            <Route path="lexicon" element={<LexiconScreen />} />
           </Route>
         </Routes>
 
