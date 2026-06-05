@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { Cefr, Sentence, Session } from '@/types';
 import { useSessionsStore } from '@/store/sessionsStore';
 import { useRecordingStore } from '@/store/recordingStore';
@@ -37,6 +37,7 @@ function handleTranscript(text: string, isFinal: boolean): void {
  */
 export function useRecordingSession(): RecordingControls {
   const navigate = useNavigate();
+  const location = useLocation();
   const timerRef = useRef<number | null>(null);
   const deepgramRef = useRef<DeepgramConnection | null>(null);
 
@@ -62,6 +63,10 @@ export function useRecordingSession(): RecordingControls {
         .setError('Transcription is not configured on this deployment.');
       return;
     }
+
+    // Clear any prior/zombie session so we never stack a second mic or timer.
+    teardown();
+    useRecordingStore.getState().reset();
 
     const draft: Session = {
       id: Date.now().toString(),
@@ -103,53 +108,84 @@ export function useRecordingSession(): RecordingControls {
             'Microphone access was denied or is unavailable. Check your browser permissions.',
           );
       });
-  }, [navigate]);
-
-  const endSession = useCallback(() => {
-    const rec = useRecordingStore.getState();
-
-    // Nothing in progress — just navigate home.
-    if (!rec.draftSession) {
-      navigate('/');
-      return;
-    }
-
-    teardown();
-    const elapsed = rec.elapsedSeconds;
-    const liveSentences = rec.collectSentences();
-    const draft = rec.draftSession;
-
-    // Guard: no German speech detected — discard the session.
-    if (liveSentences.length === 0) {
-      rec.reset();
-      window.alert('No German speech was detected. Session not saved.');
-      navigate('/');
-      return;
-    }
-
-    const sentences: Sentence[] = liveSentences.map((s) => ({
-      text: s.text,
-      translation: s.translation,
-      cefr: s.cefr,
-      highlights: s.highlights,
-    }));
-    const overallCefr: Cefr = modeCefr(sentences.map((s) => s.cefr).filter(Boolean)) ?? 'B1';
-
-    const finalSession: Session = {
-      ...draft,
-      durationSeconds: elapsed,
-      overallCefr,
-      sentences,
-    };
-
-    useSessionsStore.getState().addOrUpdate(finalSession);
-    trackCaptureCompleted(finalSession.context ?? 'testing', elapsed);
-    rec.reset();
-    useUiStore.getState().showSummary(finalSession);
-    navigate('/');
   }, [navigate, teardown]);
 
-  // Tear down on unmount — covers a hard stop / navigating away mid-recording.
+  /**
+   * Finalize the active session: tear down the mic/socket/timer, persist it
+   * (or discard if empty), and show the summary.
+   * - `navigateHome`: route to Archive (true for an explicit Stop; false when
+   *   the user already navigated elsewhere and we're just auto-stopping).
+   * - `silent`: suppress the "no German detected" alert (used on auto-stop).
+   */
+  const finalizeSession = useCallback(
+    (opts: { navigateHome: boolean; silent: boolean }) => {
+      const rec = useRecordingStore.getState();
+
+      // Nothing in progress.
+      if (!rec.draftSession) {
+        if (opts.navigateHome) navigate('/');
+        return;
+      }
+
+      teardown();
+      const elapsed = rec.elapsedSeconds;
+      const liveSentences = rec.collectSentences();
+      const draft = rec.draftSession;
+
+      // No German speech detected — discard the session.
+      if (liveSentences.length === 0) {
+        rec.reset();
+        if (!opts.silent) window.alert('No German speech was detected. Session not saved.');
+        if (opts.navigateHome) navigate('/');
+        return;
+      }
+
+      const sentences: Sentence[] = liveSentences.map((s) => ({
+        text: s.text,
+        translation: s.translation,
+        cefr: s.cefr,
+        highlights: s.highlights,
+      }));
+      const overallCefr: Cefr = modeCefr(sentences.map((s) => s.cefr).filter(Boolean)) ?? 'B1';
+
+      const finalSession: Session = {
+        ...draft,
+        durationSeconds: elapsed,
+        overallCefr,
+        sentences,
+      };
+
+      useSessionsStore.getState().addOrUpdate(finalSession);
+      trackCaptureCompleted(finalSession.context ?? 'testing', elapsed);
+      rec.reset();
+      useUiStore.getState().showSummary(finalSession);
+      if (opts.navigateHome) navigate('/');
+    },
+    [navigate, teardown],
+  );
+
+  // Explicit Stop (live button / banner) — finalize and return to Archive.
+  const endSession = useCallback(() => {
+    finalizeSession({ navigateHome: true, silent: false });
+  }, [finalizeSession]);
+
+  // Auto-stop on leaving the Live screen: when the route changes away from
+  // /live while a session is active, finalize it (releasing the mic) without
+  // hijacking the navigation the user just made. Lives in the always-mounted
+  // provider, so it's immune to the StrictMode mount/unmount double-fire that
+  // a LiveScreen-unmount effect would suffer.
+  const prevPathRef = useRef(location.pathname);
+  useEffect(() => {
+    const prev = prevPathRef.current;
+    prevPathRef.current = location.pathname;
+    if (prev === '/live' && location.pathname !== '/live') {
+      if (useRecordingStore.getState().isRecording) {
+        finalizeSession({ navigateHome: false, silent: true });
+      }
+    }
+  }, [location.pathname, finalizeSession]);
+
+  // Final safety net: tear down on full teardown of the app.
   useEffect(() => () => teardown(), [teardown]);
 
   return { beginRecording, endSession };

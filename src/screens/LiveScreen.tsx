@@ -24,7 +24,8 @@ const MIC_STATUS_TEXT: Record<MicStatus, string> = {
 export function LiveScreen() {
   const localOnly = useSettingsStore((s) => s.localStorageOnly);
   const openTranscriptionConfig = useUiStore((s) => s.openTranscriptionConfig);
-  const { endSession } = useRecordingControls();
+  const isRecording = useRecordingStore((s) => s.isRecording);
+  const { beginRecording, endSession } = useRecordingControls();
 
   return (
     <>
@@ -35,9 +36,15 @@ export function LiveScreen() {
           on confirmation.
         </p>
         <div className={shared.pageActions}>
-          <Button variant="danger" onClick={endSession}>
-            Stop recording
-          </Button>
+          {isRecording ? (
+            <Button variant="danger" onClick={endSession}>
+              Stop recording
+            </Button>
+          ) : (
+            <Button variant="primary" icon="mic" onClick={beginRecording}>
+              Start recording
+            </Button>
+          )}
           <Button onClick={openTranscriptionConfig}>Configure capture</Button>
           {localOnly && (
             <Pill style={{ marginLeft: 'auto' }}>
